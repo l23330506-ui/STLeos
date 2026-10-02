@@ -136,10 +136,24 @@ STLeos/
 ```bash
 # Clonar el repositorio
 git clone https://github.com/l23330506-ui/STLeos.git
+cd STLeos
 
-# Instalar dependencias
+# Variables de entorno (ajustar si es necesario)
+cp .env.example .env
+
+# Levantar PostgreSQL de desarrollo y pruebas (requiere Docker)
+docker compose up -d
+
+# Instalar dependencias y generar el cliente de Prisma
 npm install
+npx prisma generate
 
-# Ejecutar en modo desarrollo
+# Aplicar migraciones
+npm run db:migrate
+
+# Ejecutar en modo desarrollo (http://localhost:3000)
 npm run dev
+
+# Pruebas
+npm test
 ```

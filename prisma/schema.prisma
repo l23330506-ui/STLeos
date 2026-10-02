@@ -1,0 +1,59 @@
+// Modelo mínimo para el caso de uso "Registrar productos nuevos".
+// Las restricciones CHECK (precio > 0, existencia >= 0, stock_minimo >= 0)
+// se agregan en el SQL de la migración inicial.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Rol {
+  CAJERO
+  ENCARGADO
+  GERENTE
+}
+
+model Usuario {
+  id           Int        @id @default(autoincrement())
+  nombre       String
+  usuario      String     @unique
+  passwordHash String     @map("password_hash")
+  rol          Rol
+  activo       Boolean    @default(true)
+  creadoEn     DateTime   @default(now()) @map("creado_en")
+  bitacora     Bitacora[]
+
+  @@map("usuarios")
+}
+
+model Producto {
+  id          Int      @id @default(autoincrement())
+  codigo      String   @unique
+  nombre      String
+  categoria   String
+  talla       String?
+  color       String?
+  precio      Decimal  @db.Decimal(10, 2)
+  existencia  Int      @default(0)
+  stockMinimo Int      @default(0) @map("stock_minimo")
+  activo      Boolean  @default(true)
+  creadoEn    DateTime @default(now()) @map("creado_en")
+
+  @@map("productos")
+}
+
+// Los eventos de la bitácora no se modifican ni se eliminan.
+model Bitacora {
+  id        Int      @id @default(autoincrement())
+  usuarioId Int      @map("usuario_id")
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  accion    String
+  detalle   String
+  fecha     DateTime @default(now())
+
+  @@map("bitacora")
+}

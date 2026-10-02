@@ -1,0 +1,29 @@
+# PostgreSQL solo para desarrollo y pruebas (en producción corre en el servidor local).
+# Las credenciales deben coincidir con las de .env.example.
+services:
+  db:
+    image: postgres:17
+    container_name: stleos-db
+    environment:
+      POSTGRES_USER: usuario
+      POSTGRES_PASSWORD: contrasena
+      POSTGRES_DB: stleos
+    ports:
+      - "5432:5432"
+    volumes:
+      - stleos-db-data:/var/lib/postgresql/data
+
+  db-test:
+    image: postgres:17
+    container_name: stleos-db-test
+    environment:
+      POSTGRES_USER: usuario
+      POSTGRES_PASSWORD: contrasena
+      POSTGRES_DB: stleos_test
+    ports:
+      - "5433:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+
+volumes:
+  stleos-db-data:
