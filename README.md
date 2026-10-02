@@ -1,6 +1,6 @@
 # STLEOS - Sistema Digital de Gestión Integral de Ventas e Inventario
 
-Sistema de punto de venta (POS) y gestión de inventarios para tienda física local, desarrollado para el **Instituto Tecnológico de Hermosillo**.
+Sistema web de punto de venta (POS) y gestión de inventarios para tienda física local, desarrollado para el **Instituto Tecnológico de Hermosillo**.
 
 ---
 
@@ -18,22 +18,44 @@ Sistema de punto de venta (POS) y gestión de inventarios para tienda física lo
 ## 🚀 Descripción del Proyecto
 Una tienda física con ventas diarias que depende de hojas de cálculo manuales sufre errores, pérdida de tiempo e inconsistencias en sus registros, además de no contar con control de stock, verificación de productos ni emisión automática de comprobantes.
 
-STLEOS es una solución local que automatiza las operaciones clave de la tienda: registro de ventas en tiempo real, control de inventario mediante escaneo de productos, emisión automática de tickets, corte de caja diario y reportes detallados. Incluye control de usuarios por rol, respaldo seguro de datos y compatibilidad con futuras integraciones web.
+STLEOS es una **aplicación web** que se sirve desde un servidor local de la tienda y se usa desde el navegador de las computadoras conectadas por LAN. Automatiza las operaciones clave: registro de ventas en tiempo real, control de inventario mediante escaneo de productos, emisión automática de tickets (y facturas cuando el cliente las solicite), corte de caja diario y reportes detallados. Incluye control de usuarios por rol y respaldo seguro de datos. Funciona sin internet y con los datos 100% locales; a futuro podrá exponer una consulta web de productos mediante su API REST.
 
 ### 🛠️ Características Principales
-* **Punto de Venta:** Registro acelerado mediante lectura de código de barras/QR, carrito de compras y soporte de cobro en efectivo, tarjeta y transferencia.
-* **Gestión de Inventarios:** Registro de productos nuevos con generación de código de barras, control de existencias en tiempo real, registro de mercancía entrante, reimpresión de códigos y alertas de stock bajo.
-* **Corte de Caja e Impresión:** Emisión automática de tickets (80 mm) y actas de corte de caja diario.
-* **Control de Usuarios y Bitácora:** Roles jerárquicos (*Gerente*, *Encargado*, *Cajero*), contraseñas cifradas y registro de auditoría en bitácora para todas las acciones sensibles.
-* **Reportes:** Análisis por fecha, período (día, semana, mes, año), categoría, talla y método de pago, con exportación a PDF y Excel.
+* **Punto de Venta:** Registro acelerado mediante lectura de código de barras/QR, carrito de compras con control de stock y cobro en efectivo (con cálculo de cambio), tarjeta y transferencia (folio SPEI).
+* **Gestión de Inventarios:** Registro de productos nuevos con generación de código de barras único (con reimpresión), registro de mercancía entrante (nombre, cantidad, fecha, proveedor), existencias en tiempo real, búsqueda por nombre, código o categoría y alertas de stock bajo.
+* **Comprobantes:** Ticket inmediato, impreso o digital, emitido 100% en local. La factura electrónica (CFDI) se emite solo si el cliente la solicita; si no hay internet queda como "Pendiente de timbrar" sin bloquear la venta.
+* **Corte de Caja:** Arqueo físico, validación del Encargado, aprobación del Gerente, acta imprimible o en PDF y bloqueo de nuevas ventas del turno.
+* **Control de Usuarios y Bitácora:** Roles jerárquicos, contraseñas cifradas y registro de auditoría de todas las acciones sensibles (la bitácora no se modifica ni se elimina).
+* **Reportes:** Por día, semana, mes y año, y por categoría, talla y método de pago, con exportación a PDF y Excel.
 * **Respaldo de datos:** Copias de seguridad de la base de datos local.
 
+### 👤 Roles y Permisos
+Jerarquía **Cajero ⊂ Encargado ⊂ Gerente**: cada rol hereda lo del anterior.
+
+| Rol | Puede |
+|---|---|
+| **Cajero** | Escanear y consultar disponibilidad, registrar ventas y pagos, emitir tickets o facturas, generar reportes diarios. |
+| **Encargado** | Lo del Cajero, registrar entradas de stock, consultar stock bajo, generar reportes operativos y validar el corte de caja. |
+| **Gerente** | Lo del Encargado, registrar y eliminar (desactivar) productos, **actualizar precios** (con historial de fecha y responsable), autorizar ajustes de inventario y aprobar el corte de caja. |
+
+### 📋 Casos de Uso
+* **Venta y pago:** Escanear productos, Consultar disponibilidad, Registrar venta, Registrar pago (efectivo, tarjeta, transferencia), Emitir ticket, Emitir factura.
+* **Inventario:** Registrar entradas, Detectar stock bajo, Registrar productos nuevos, Eliminar productos, Actualizar precio.
+* **Caja:** Corte de caja diario.
+* **Reportes:** Por día, semana, mes, año, talla y método de pago.
+
 ### 📏 Requisitos No Funcionales
-* Una sola sucursal; funciona solo en computadoras y sin internet.
+* Una sola sucursal; se usa desde navegador en computadoras (no se diseña para móviles ni tablets) y sin internet.
 * Hasta 3 usuarios simultáneos y hasta 5,000 productos.
 * Ventas registradas en menos de 2 s y consultas en menos de 1 s.
-* Arquitectura modular (modelo 4+1 vistas): estaciones cliente conectadas por LAN a un servidor local con servicio de aplicación y base de datos.
-* Periféricos: lector de código de barras, terminal de pago e impresora de tickets.
+* Disponibilidad del 99 %, arranque en menos de 10 s y registro de interrupciones mayores a 2 minutos.
+* Contraseñas cifradas, validaciones estrictas y recuperación mediante transacciones.
+* Interfaz y reportes en español, adaptados al contexto mexicano (IVA, RFC en facturación).
+* Arquitectura modular (modelo 4+1 vistas): estaciones cliente conectadas por LAN a un servidor local con servicio de aplicación y base de datos 100% local.
+* Periféricos: lector de código de barras (USB, funciona como teclado sobre un campo con foco), impresora de tickets y terminal de pago. *Pendiente de definir:* mecanismo de impresión de tickets desde el navegador y de integración con la terminal de pago.
+
+### 🖥️ Vistas del Sistema
+Inicio, Venta, Tickets, Devoluciones, Inventario (nuevo producto, actualizar stock, tiempo real), Pagos y Caja (métodos de pago, venta exitosa, corte de caja, historial de cortes), Reportes (ventas, inventario, resumen general), Gestión de Usuarios (inicio/cierre de sesión, bitácora de movimientos) y Configuraciones.
 
 ---
 
