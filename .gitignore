@@ -2,3 +2,24 @@
 ACTIVIDAD1_UNIDAD2_EQUIPO4.pdf
 ProyectoA1.Eq4.STLeos.pdf
 Avance 2 Steleos.pdf
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+*.log
+
+# Variables de entorno (usar .env.example como plantilla)
+.env
+.env.*
+!.env.example
+
+# Pruebas
+coverage/
+playwright-report/
+test-results/
+
+# Editor / sistema
+.DS_Store
+Thumbs.db

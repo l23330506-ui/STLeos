@@ -107,6 +107,24 @@ La validación se hace en tres capas: (1) en la frontera con DTOs y esquemas **Z
 * No se integra código generado por IA que el equipo no entienda y no pueda explicar: la IA propone, el equipo decide y responde.
 * Antes de usar la IA para programar un módulo, el equipo define su alcance y casos de uso.
 
+### 🗂️ Estructura del Proyecto
+```
+STLeos/
+├─ docs/          diagramas 4+1, OpenAPI, diseño y actas
+├─ prisma/        migraciones (con CHECK/UNIQUE) y datos de prueba
+├─ src/
+│  ├─ app/        Vista y rutas (Next.js): login, panel y /api
+│  ├─ controllers/ Controlador (MVC)
+│  ├─ domain/     Modelo: Carrito, Inventario, Venta, Ticket, Bitácora, pagos (Strategy)
+│  ├─ services/   casos de uso
+│  ├─ repositories/ acceso a datos
+│  ├─ schemas/    DTOs y esquemas Zod
+│  ├─ auth/       sesión, contraseñas y permisos por rol
+│  ├─ infra/      lector, impresora, terminal de pago, CFDI y respaldo
+│  ├─ components/ y lib/
+└─ tests/         unit, integration, e2e y performance
+```
+
 ---
 
 ## 🏗️ Requisitos e Instalación
