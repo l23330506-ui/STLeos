@@ -4,6 +4,7 @@
   "private": true,
   "description": "STLEOS - Sistema Digital de Gestión Integral de Ventas e Inventario",
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

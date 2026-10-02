@@ -151,6 +151,9 @@ npx prisma generate
 # Aplicar migraciones
 npm run db:migrate
 
+# Cargar usuarios de prueba (gerente, encargado, cajero; contraseña de desarrollo: stleos123)
+npm run db:seed
+
 # Ejecutar en modo desarrollo (http://localhost:3000)
 npm run dev
 
