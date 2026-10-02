@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: contrasena
       POSTGRES_DB: stleos
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - stleos-db-data:/var/lib/postgresql/data
 
